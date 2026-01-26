@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <title>可能性の模索</title>
+     <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1></h1>
+    <div>
+このゲームはユーザーがボタンをクリックすることで、今日の運勢をランダムに表示する「おみくじゲーム」です。<br>
+おみくじを引く機能<br>
+ユーザーが「おみくじを引く」ボタンを押すと、プログラムがランダムに運勢を選択し、結果を表示する。<br>
+運勢に応じたメッセージ表示<br>
+「大吉」「中吉」「小吉」「吉」「凶」などの結果に応じて、それぞれ異なるメッセージが表示される。<br>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>AIおみくじゲーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .box {
+            background: white;
+            width: 400px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #message {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h1>🔮 AIおみくじ 🔮</h1>
+    <p>ボタンを押して今日の運勢を占おう！</p>
+    <button onclick="drawOmikuji()">おみくじを引く</button>
+
+    <div id="result"></div>
+    <div id="message"></div>
+</div>
+
+<script>
+function drawOmikuji() {
+    const fortunes = [
+        {
+            name: "大吉",
+            message: "今日は何をやってもうまくいく一日です！自信を持って行動しましょう。"
+        },
+        {
+            name: "中吉",
+            message: "努力が報われる日です。最後まで諦めないことが大切です。"
+        },
+        {
+            name: "小吉",
+            message: "小さな幸せが見つかる日。周りをよく見てみましょう。"
+        },
+        {
+            name: "吉",
+            message: "安定した一日になりそうです。普段通りを大切にしましょう。"
+        },
+        {
+            name: "凶",
+            message: "焦らず慎重に行動しましょう。無理は禁物です。"
+        }
+    ];
+
+    // ランダムに1つ選択
+    const randomIndex = Math.floor(Math.random() * fortunes.length);
+    const result = fortunes[randomIndex];
+
+    document.getElementById("result").textContent = "結果：" + result.name;
+    document.getElementById("message").textContent = result.message;
+}
+</script>
+
+</body>
+</html>
+
+    </div>
+
+</body>
+</html>
