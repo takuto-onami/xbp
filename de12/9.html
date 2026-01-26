@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <title>ゲーム作成</title>
+     <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1>数当てゲーム</h1>
+自分なりに調べてみたときに「PythonとHTML」でできるゲームがじゃんけんや簡易RPG、数当てゲームなどがあり<br>
+その中で一番興味を持ったのが数あてゲームだったので作成してみました。
+    <div> 
+<pre><code>
+import random
+
+def number_guess_game():
+    print("数あてゲームを開始します")
+    print("1〜10の数字を当ててください")
+
+    answer = random.randint(1, 10)
+    count = 0
+
+    while True:
+        guess = int(input("数字を入力してください: "))
+        count += 1
+
+        if guess == answer:
+            print(f"正解です！ {count}回で当たりました")
+            break
+        elif guess < answer:
+            print("もっと大きい数字です")
+        else:
+            print("もっと小さい数字です")
+
+# ゲーム開始
+number_guess_game()
+</code></pre>
+
+    </div>
+
+</body>
+</html>
