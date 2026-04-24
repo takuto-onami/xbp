@@ -15,32 +15,30 @@
 <pre><code>
 #include &lt;Adafruit_NeoPixel.h&gt;
 
-// モーター用
 const int DIR  = 8;
 const int STEP = 9;
 
-// NeoPixel用（ピン変更！）
+
 #define LED_PIN     6
 #define NUMPIXELS   5
 
-// 明るさセンサー
 const int CDS_PIN = A1;
 
-// しきい値（ここで明るい/暗いを判定）
+
 int threshold = 300;
 
 Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
-  // モーター
+
   pinMode(DIR, OUTPUT);
   pinMode(STEP, OUTPUT);
 
-  // LED
+
   pixels.begin();
   pixels.setBrightness(50);
 
-  // シリアル（デバッグ用）
+
   Serial.begin(9600);
 }
 
@@ -49,7 +47,7 @@ void loop() {
   Serial.println(val);
 
   if (val &lt; threshold) {
-    // 明るい → モーター回転
+
     pixels.clear();
     pixels.show();
 
@@ -58,12 +56,12 @@ void loop() {
     }
 
   } else {
-    // 暗い → LED点灯
+
     digitalWrite(STEP, LOW);
 
     pixels.clear();
     for (int i = 0; i &lt; NUMPIXELS; i++) {
-      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // 青
+      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); 
     }
     pixels.show();
   }
@@ -71,7 +69,7 @@ void loop() {
   delay(0);
 }
 
-// モーター関数
+
 void clockwise(int delaytime) {
   digitalWrite(DIR, HIGH);
   digitalWrite(STEP, HIGH);
@@ -83,13 +81,22 @@ void clockwise(int delaytime) {
 
         <h2>簡単なコード説明・作品紹介</h2>
         <p>
-        CdSセンサー上で300以下の数値を出したときはモーターが動き、
-        300より大きい数値を出したときはLEDが光るコードを作った。
-        この仕組みは、昼間は扇風機が作動し、夜間はLEDが照明として機能する状況を想定したものです。
+        CdSセンサー上で300以下の数値を出したときはモーターが動き、<br>
+        300より大きい数値を出したときはLEDが光るコードを作った。<br>
+        この仕組みは、昼間は扇風機が作動し、夜間はLEDが照明として機能する状況を想定したものです。<br>
         </p>
         <h2>作品動画</h2><br>
- <iframe width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br>
+ <h2>作品動画</h2>
 
+<iframe 
+  width="315" 
+  height="560" 
+  src="https://www.youtube.com/embed/dIJEsNSkUS4" 
+  title="YouTube Shorts video player" 
+  frameborder="0" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+  allowfullscreen>
+</iframe>
     <h2>簡単なしくみの説明</h2>
     明るさが300より明かるければモーター（扇風機）が回り、暗ければLEDが点灯する<br>
 
