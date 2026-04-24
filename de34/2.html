@@ -1,83 +1,102 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html lang="ja">
 <head>
-    <title>デザイン演習Ⅲ・Ⅳ　　第二回/title>
-     <link rel="stylesheet" href="./css/style.css">
+    <meta charset="UTF-8">
+    <title>デザイン演習Ⅲ・Ⅳ　第二回</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
-    <h1>Arduino、モーター、センサー、NeoPixelを使って扇風機を作る
-</h1>
+    <h1>Arduino、モーター、センサー、NeoPixelを使って扇風機を作る</h1>
+
     <div>
- <h2>使用したコード</h2><br>
- #include <Adafruit_NeoPixel.h><br>
+      <h2>使用したコード</h2>
 
-const int DIR  = 8;<br>
-const int STEP = 9;<br>
+<pre><code>
+#include &lt;Adafruit_NeoPixel.h&gt;
 
-#define LED_PIN     6<br>
-#define NUMPIXELS   5<br>
+// モーター用
+const int DIR  = 8;
+const int STEP = 9;
 
+// NeoPixel用（ピン変更！）
+#define LED_PIN     6
+#define NUMPIXELS   5
 
-const int CDS_PIN = A1;<br>
+// 明るさセンサー
+const int CDS_PIN = A1;
 
+// しきい値（ここで明るい/暗いを判定）
+int threshold = 300;
 
-int threshold = 300;<br>
+Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
-Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);<br>
+void setup() {
+  // モーター
+  pinMode(DIR, OUTPUT);
+  pinMode(STEP, OUTPUT);
 
-void setup() {<br>
-  pinMode(DIR, OUTPUT);<br>
-  pinMode(STEP, OUTPUT);<br>
-  pixels.begin();<br>
-  pixels.setBrightness(50);<br>
+  // LED
+  pixels.begin();
+  pixels.setBrightness(50);
 
-  Serial.begin(9600);<br>
-}<br>
+  // シリアル（デバッグ用）
+  Serial.begin(9600);
+}
 
-void loop() {<br>
-  int val = analogRead(CDS_PIN);<br>
-  Serial.println(val);<br>
+void loop() {
+  int val = analogRead(CDS_PIN);
+  Serial.println(val);
 
-  if (val < threshold) {<br>
-    pixels.clear();<br>
-    pixels.show();<br>
+  if (val &lt; threshold) {
+    // 明るい → モーター回転
+    pixels.clear();
+    pixels.show();
 
-    for (int i = 0; i < 360; i++) {<br>
-      clockwise(800);<br>
-    }<br>
+    for (int i = 0; i &lt; 360; i++) {
+      clockwise(800);
+    }
 
-  } else {<br>
-    digitalWrite(STEP, LOW);<br>
+  } else {
+    // 暗い → LED点灯
+    digitalWrite(STEP, LOW);
 
-    pixels.clear();<br>
-    for (int i = 0; i < NUMPIXELS; i++) {<br>
-      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); <br>
-    }<br>
-    pixels.show();<br>
-  }<br>
+    pixels.clear();
+    for (int i = 0; i &lt; NUMPIXELS; i++) {
+      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); // 青
+    }
+    pixels.show();
+  }
 
-  delay(0);<br>
-}<br>
+  delay(0);
+}
 
-void clockwise(int delaytime) {<br>
-  digitalWrite(DIR, HIGH);<br>
-  digitalWrite(STEP, HIGH);<br>
-  delayMicroseconds(delaytime);<br>
-  digitalWrite(STEP, LOW);<br>
-  delayMicroseconds(delaytime);<br>
-}<br>
- <h2>簡単なコード説明・作品紹介</h2><br>
-CdSセンサー上で300以下の数値を出したときはモーターが動き、<br>
-300より大きい数値を題したときはLEDが光るコードを作った。<br>
-この仕組みは、昼間は扇風機が作動し、夜間はLEDが照明として機能する状況を想定したものです。<br>
-<h2>作品動画</h2><br>
+// モーター関数
+void clockwise(int delaytime) {
+  digitalWrite(DIR, HIGH);
+  digitalWrite(STEP, HIGH);
+  delayMicroseconds(delaytime);
+  digitalWrite(STEP, LOW);
+  delayMicroseconds(delaytime);
+}
+</code></pre>
 
-<h2>感想・反省</h2><br>
-Arduinoとモーター、センサー、NeoPixelの4つを接続し、動作させようとしたが、<br>
-各部品を正しく連携させて正常に動作させるまでに思ったより時間がかかり、<br>
-配線やプログラムの理解不足を感じた。<br>
-また、今回の作品でははLEDをすべて異なる色で光らせることも目標としていたが、<br>
-思うようにいかず、次の機会があればその部分も含めて完璧なものを作りたい。<br>
+        <h2>簡単なコード説明・作品紹介</h2>
+        <p>
+        CdSセンサー上で300以下の数値を出したときはモーターが動き、
+        300より大きい数値を出したときはLEDが光るコードを作った。
+        この仕組みは、昼間は扇風機が作動し、夜間はLEDが照明として機能する状況を想定したものです。
+        </p>
+        <h2>作品動画</h2><br>
+ <iframe width="560" height="315" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br><br>
+
+    <h2>簡単なしくみの説明</h2>
+    明るさが300より明かるければモーター（扇風機）が回り、暗ければLEDが点灯する<br>
+
+    <h2>感想・反省点</h2>
+    ChatGPTを利用しながら実際の挙動とのズレを修正して動かせた。<br>
+    3Dプリンターを利用してみたかったが、時間がかかるので断念してしまった。<br>
+
     </div>
 
 </body>
