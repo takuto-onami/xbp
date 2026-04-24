@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <title>デザイン演習Ⅲ・Ⅳ　　第二回/title>
+     <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h1>Arduino、モーター、センサー、NeoPixelを使って扇風機を作る
+</h1>
+    <div>
+ <h2>使用したコード</h2><br>
+ #include <Adafruit_NeoPixel.h><br>
+
+const int DIR  = 8;<br>
+const int STEP = 9;<br>
+
+#define LED_PIN     6<br>
+#define NUMPIXELS   5<br>
+
+
+const int CDS_PIN = A1;<br>
+
+
+int threshold = 300;<br>
+
+Adafruit_NeoPixel pixels(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);<br>
+
+void setup() {<br>
+  pinMode(DIR, OUTPUT);<br>
+  pinMode(STEP, OUTPUT);<br>
+  pixels.begin();<br>
+  pixels.setBrightness(50);<br>
+
+  Serial.begin(9600);<br>
+}<br>
+
+void loop() {<br>
+  int val = analogRead(CDS_PIN);<br>
+  Serial.println(val);<br>
+
+  if (val < threshold) {<br>
+    pixels.clear();<br>
+    pixels.show();<br>
+
+    for (int i = 0; i < 360; i++) {<br>
+      clockwise(800);<br>
+    }<br>
+
+  } else {<br>
+    digitalWrite(STEP, LOW);<br>
+
+    pixels.clear();<br>
+    for (int i = 0; i < NUMPIXELS; i++) {<br>
+      pixels.setPixelColor(i, pixels.Color(0, 0, 255)); <br>
+    }<br>
+    pixels.show();<br>
+  }<br>
+
+  delay(0);<br>
+}<br>
+
+void clockwise(int delaytime) {<br>
+  digitalWrite(DIR, HIGH);<br>
+  digitalWrite(STEP, HIGH);<br>
+  delayMicroseconds(delaytime);<br>
+  digitalWrite(STEP, LOW);<br>
+  delayMicroseconds(delaytime);<br>
+}<br>
+ <h2>簡単なコード説明・作品紹介</h2><br>
+CdSセンサー上で300以下の数値を出したときはモーターが動き、<br>
+300より大きい数値を題したときはLEDが光るコードを作った。<br>
+この仕組みは、昼間は扇風機が作動し、夜間はLEDが照明として機能する状況を想定したものです。<br>
+<h2>作品動画</h2><br>
+
+<h2>感想・反省</h2><br>
+Arduinoとモーター、センサー、NeoPixelの4つを接続し、動作させようとしたが、<br>
+各部品を正しく連携させて正常に動作させるまでに思ったより時間がかかり、<br>
+配線やプログラムの理解不足を感じた。<br>
+また、今回の作品でははLEDをすべて異なる色で光らせることも目標としていたが、<br>
+思うようにいかず、次の機会があればその部分も含めて完璧なものを作りたい。<br>
+    </div>
+
+</body>
+</html>コー
